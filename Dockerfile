@@ -30,5 +30,5 @@ RUN cat /bootstrap/pulseaudio.service >> /etc/systemd/system/pulseaudio.service
 # RUN systemctl daemon-reload && systemctl enable pulseaudio.service
 
 # Set usb audio card as default
-ADD bootstrap/pulseaudio-default-sink.sh /bootstrap/
-RUN . /bootstrap/pulseaudio-default-sink.sh
+# ADD bootstrap/pulseaudio-default-sink.sh /bootstrap/
+# RUN . /bootstrap/pulseaudio-default-sink.sh
