@@ -1,4 +1,5 @@
 FROM resin/armv7hf-debian:stretch
+ENV INITSYSTEM on
 
 RUN apt-get update && apt-get -y --no-install-recommends install apt-utils
 RUN apt-get -y upgrade && apt-get -y --no-install-recommends install \
