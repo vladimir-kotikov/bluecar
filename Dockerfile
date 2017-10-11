@@ -6,18 +6,8 @@ ENV DEBIAN_FRONTEND noninteractive
 COPY bootstrap/01_nodoc /etc/dpkg/dpkg.cfg.d/
 COPY bootstrap/01_buildconfig /etc/apt/apt.conf.d/
 
-RUN apt-get update && apt-get install apt-utils systemd
-RUN apt-get upgrade && apt-get install bluez pulseaudio pulseaudio-module-bluetooth dbus-
-
-# We only want few core services run in the container.
-RUN find /etc/systemd/system \
-    /lib/systemd/system \
-    -path '*.wants/*' \
-    -not -name '*journald*' \
-    -not -name '*udevd*' \
-    -not -name '*systemd-tmpfiles*' \
-    -not -name '*systemd-user-sessions*' \
-    -exec rm \{} \;
+RUN apt-get update && apt-get install apt-utils
+RUN apt-get upgrade && apt-get install bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth
 
 ## Authorize users (each user that will be using PA must belong to group pulse-access)
 RUN adduser $(whoami) pulse-access
