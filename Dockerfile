@@ -29,10 +29,10 @@ ADD bootstrap/system.pa /bootstrap/
 RUN cat /bootstrap/system.pa >> /etc/pulse/system.pa
 
 # Create and start a systemd service for running pulseaudio in System Mode as user "pulse".
-ADD bootstrap/pulseaudio.service /bootstrap/
-RUN cat /bootstrap/pulseaudio.service >> /etc/systemd/system/pulseaudio.service
+# ADD bootstrap/pulseaudio.service /bootstrap/
+# RUN cat /bootstrap/pulseaudio.service >> /etc/systemd/system/pulseaudio.service
 
-RUN systemctl enable pulseaudio.service
+# RUN systemctl enable pulseaudio.service
 # RUN systemctl daemon-reload && systemctl enable pulseaudio.service
 
 # Set usb audio card as default
