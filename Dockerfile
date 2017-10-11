@@ -5,6 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 COPY bootstrap/01_nodoc /etc/dpkg/dpkg.cfg.d/
 COPY bootstrap/01_buildconfig /etc/apt/apt.conf.d/
+COPY bootstrap/raspi.list /etc/apt/sources.list/
+RUN apt-key adv --keyserver pgp.mit.edu  --recv-key 0x9165938D90FDDD2E
 
 RUN apt-get update && apt-get install apt-utils
 RUN apt-get upgrade && apt-get install bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth
