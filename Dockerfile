@@ -7,7 +7,7 @@ COPY bootstrap/01_nodoc /etc/dpkg/dpkg.cfg.d/
 COPY bootstrap/01_buildconfig /etc/apt/apt.conf.d/
 
 RUN apt-get update && apt-get install apt-utils systemd
-RUN apt-get upgrade && apt-get install bluez pulseaudio pulseaudio-module-bluetooth
+RUN apt-get upgrade && apt-get install bluez pulseaudio pulseaudio-module-bluetooth dbus-
 
 # We only want few core services run in the container.
 RUN find /etc/systemd/system \
