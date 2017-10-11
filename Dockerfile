@@ -1,9 +1,23 @@
-FROM resin/armv7hf-debian:stretch
-ENV INITSYSTEM on
+FROM arm32v7/debian:stretch-slim
 
-RUN apt-get update && apt-get -y --no-install-recommends install apt-utils
-RUN apt-get -y upgrade && apt-get -y --no-install-recommends install \
-    bluez bluez-tools pulseaudio pulseaudio-module-bluetooth pulseaudio-utils
+ENV LC_ALL C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+
+COPY 01_nodoc /etc/dpkg/dpkg.cfg.d/
+COPY 01_buildconfig /etc/apt/apt.conf.d/
+
+# We only want few core services run in the container.
+RUN find /etc/systemd/system \
+    /lib/systemd/system \
+    -path '*.wants/*' \
+    -not -name '*journald*' \
+    -not -name '*udevd*' \
+    -not -name '*systemd-tmpfiles*' \
+    -not -name '*systemd-user-sessions*' \
+    -exec rm \{} \;
+
+RUN apt-get update && apt-get install apt-utils
+RUN apt-get upgrade && apt-get install bluez pulseaudio
 
 ## Authorize users (each user that will be using PA must belong to group pulse-access)
 RUN adduser $(whoami) pulse-access
@@ -28,8 +42,9 @@ RUN cat /bootstrap/system.pa >> /etc/pulse/system.pa
 ADD bootstrap/pulseaudio.service /bootstrap/
 RUN cat /bootstrap/pulseaudio.service >> /etc/systemd/system/pulseaudio.service
 
+RUN systemctl enable pulseaudio.service
 # RUN systemctl daemon-reload && systemctl enable pulseaudio.service
 
 # Set usb audio card as default
-# ADD bootstrap/pulseaudio-default-sink.sh /bootstrap/
-# RUN . /bootstrap/pulseaudio-default-sink.sh
+ADD bootstrap/pulseaudio-default-sink.sh /bootstrap/
+RUN . /bootstrap/pulseaudio-default-sink.sh
