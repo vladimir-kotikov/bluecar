@@ -16,8 +16,9 @@ RUN find /etc/systemd/system \
     -not -name '*systemd-user-sessions*' \
     -exec rm \{} \;
 
-RUN apt-get update && apt-get install apt-utils
-RUN apt-get upgrade && apt-get install bluez pulseaudio
+RUN apt-get install apt-utils systemd
+RUN apt-get update && apt-get upgrade
+RUN apt-get install bluez pulseaudio pulseaudio-module-bluetooth
 
 ## Authorize users (each user that will be using PA must belong to group pulse-access)
 RUN adduser $(whoami) pulse-access
