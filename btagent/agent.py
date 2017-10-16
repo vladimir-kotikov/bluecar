@@ -29,7 +29,7 @@ except ImportError:
 
 # 110d is A2DP profile. See https://www.bluetooth.com/specifications/assigned-numbers/service-discovery
 # for other IDs
-ALLOWED_SERVICES = ("110d",)
+ALLOWED_SERVICES = ("110d", "110e")
 
 BUS_NAME = 'org.bluez'
 AGENT_INTERFACE = 'org.bluez.Agent1'
@@ -93,9 +93,13 @@ class Agent(dbus.service.Object):
     def AuthorizeService(self, device, uuid):
         LOG.info("Received AuthorizeService (%s, %s)", device, uuid)
 
-        service_id = uuid[:3]
+        service_id = uuid[4:8]
+        LOG.debug("s_id.lower = %s ALLOWED_SERVICES = %s",
+                  service_id.lower(), ALLOWED_SERVICES)
+
         if service_id.lower() in ALLOWED_SERVICES:
-            LOG.info("Service is allowed")
+            LOG.info("Service %s is in %s, allow",
+                     service_id.lower(), ALLOWED_SERVICES)
             self.__set_trusted(device)
             return
 
