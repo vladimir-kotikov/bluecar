@@ -1,8 +1,0 @@
-### Automatically load driver modules for Bluetooth hardware
-.ifexists module-bluetooth-discover.so
-load-module module-bluetooth-discover
-.endif
-
-.ifexists module-bluetooth-policy.so
-load-module module-bluetooth-policy
-.endif
