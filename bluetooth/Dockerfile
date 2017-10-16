@@ -1,3 +1,5 @@
+# This is based on https://github.com/resin-io-projects/boombeastic/pull/34/files
+
 # Don't use stretch as it doesn't have properly patched bluez yet
 # See https://github.com/raspberrypi/linux/issues/1314#issuecomment-190784653
 FROM resin/raspberrypi3-debian
@@ -5,6 +7,8 @@ FROM resin/raspberrypi3-debian
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
     # pi-bluetooth is required to activate HCI interface
+    # TODO: instead pi-bluetooth install just raspberrypi-sys-mods and
+    # craft own hci configuration service (+ device name setup)
     bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth pi-bluetooth socat
 
 # TODO: Remove lines below - these are only for testing purposes
