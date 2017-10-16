@@ -10,11 +10,6 @@ RUN apt-get update && \
     # craft own hci configuration service (+ device name setup)
     bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth pi-bluetooth socat
 
-# TODO: Remove lines below - these are only for testing purposes
-RUN apt-get install -yq --no-install-recommends mpg123
-COPY ./BlueZedEx.mp3 /
-
-# TODO: Run bluetooth service in verbose mode
 
 COPY conf/alsa-base.conf /etc/modprobe.d/
 COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
@@ -30,8 +25,15 @@ RUN echo "load-module module-bluetooth-policy" >> /etc/pulse/system.pa
 RUN sed 's/^load-module module-console-kit/#load-module module-console-kit/' -i /etc/pulse/system.pa
 RUN sed 's/^load-module module-udev-detect/load-module module-udev-detect tsched=0/' -i /etc/pulse/system.pa
 
+## Services
+
 COPY service/hciuart.service /lib/systemd/system/
 COPY service/socat.service /etc/systemd/system/basic.target.wants/
+
+# Run bluetooth service in debug mode
+RUN sed 's/^ExecStart=\/usr\/lib\/bluetooth\/bluetoothd/ExecStart=\/usr\/lib\/bluetooth\/bluetoothd -d/' \
+    -i /lib/systemd/system/bluetooth.service
+
 # hciattach searches for firmware in /etc/firmware instead of /lib/firmware
 RUN ln -s /lib/firmware/brcm /etc/firmware
 
