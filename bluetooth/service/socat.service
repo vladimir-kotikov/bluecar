@@ -1,0 +1,10 @@
+[Unit]
+Description=Shares dbus system bus socket via tcp
+Wants=dbus.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/socat -d -d TCP-LISTEN:7272,reuseaddr,fork UNIX-CONNECT:/var/run/dbus/system_bus_socket
+
+[Install]
+WantedBy=basic.target

@@ -42,7 +42,7 @@ echo "resample-method = ffmpeg" > /etc/pulse/daemon.conf
 # PulseAudio (both version 2 and 5) has a problem with the Pi's on-board sound driver.
 # If you are not using a USB sound card, the following work-around helps to remove stuttering and other problems
 # https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=87138#p619713
-sed -i 's/load-module module-udev-detect/load-module module-udev-detect tsched=0/' /etc/pulse/system.pa
+
 
 # Load  Bluetooth discover and policy modules in SYSTEM MODE
 # See https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Modules/#index36h3
