@@ -9,6 +9,9 @@ RUN apt-get update && \
     # pi-bluetooth is required to activate HCI interface
     # TODO: instead pi-bluetooth install just raspberrypi-sys-mods and
     # craft own hci configuration service (+ device name setup)
+    # TODO: hciuart service sometimes still fail to flash firmware due to timeout
+    #   Custom service shoud use https://www.freedesktop.org/software/systemd/man/systemd.service.html#Restart=
+    # to restart service when attach fails
     bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth pi-bluetooth socat
 
 # TODO: Remove lines below - these are only for testing purposes
@@ -17,6 +20,7 @@ COPY ./BlueZedEx.mp3 /
 
 COPY conf/alsa-base.conf /etc/modprobe.d/
 COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
+# TODO: Ideally DB should reconnect to last device automatically
 COPY conf/bluetooth-main.conf /etc/bluetooth/main.conf
 
 RUN echo "resample-method = ffmpeg" >> /etc/pulse/daemon.conf
