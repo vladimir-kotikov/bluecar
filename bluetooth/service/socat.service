@@ -5,7 +5,7 @@ Wants=dbus.service
 [Service]
 # TODO: Must be set as "forking" - https://www.freedesktop.org/software/systemd/man/systemd.service.html#Type=
 Type=simple
-ExecStart=/usr/bin/sosudo cat -d -d TCP-LISTEN:7272,reuseaddr,fork UNIX-CONNECT:/var/run/dbus/system_bus_socket
+ExecStart=/usr/bin/socat -d -d TCP-LISTEN:7272,reuseaddr,fork UNIX-CONNECT:/var/run/dbus/system_bus_socket
 
 [Install]
 WantedBy=basic.target
