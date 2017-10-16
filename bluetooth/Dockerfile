@@ -18,6 +18,8 @@ RUN apt-get update && \
 RUN apt-get install -yq --no-install-recommends mpg123
 COPY ./BlueZedEx.mp3 /
 
+# TODO: Run bluetooth service in verbose mode
+
 COPY conf/alsa-base.conf /etc/modprobe.d/
 COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
 # TODO: Ideally DB should reconnect to last device automatically
