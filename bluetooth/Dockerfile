@@ -6,12 +6,8 @@ FROM resin/raspberrypi3-debian
 
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
-    # pi-bluetooth is required to activate HCI interface
     # TODO: instead pi-bluetooth install just raspberrypi-sys-mods and
     # craft own hci configuration service (+ device name setup)
-    # TODO: hciuart service sometimes still fail to flash firmware due to timeout
-    #   Custom service shoud use https://www.freedesktop.org/software/systemd/man/systemd.service.html#Restart=
-    # to restart service when attach fails
     bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth pi-bluetooth socat
 
 # TODO: Remove lines below - these are only for testing purposes
@@ -34,6 +30,7 @@ RUN echo "load-module module-bluetooth-policy" >> /etc/pulse/system.pa
 RUN sed 's/^load-module module-console-kit/#load-module module-console-kit/' -i /etc/pulse/system.pa
 RUN sed 's/^load-module module-udev-detect/load-module module-udev-detect tsched=0/' -i /etc/pulse/system.pa
 
+COPY service/hciuart.service /lib/systemd/system/
 COPY service/socat.service /etc/systemd/system/basic.target.wants/
 # hciattach searches for firmware in /etc/firmware instead of /lib/firmware
 RUN ln -s /lib/firmware/brcm /etc/firmware
