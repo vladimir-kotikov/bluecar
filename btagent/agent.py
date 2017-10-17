@@ -9,7 +9,7 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 from dbus.exceptions import DBusException
-from bluezutils import find_adapter, ADAPTER_INTERFACE, DEVICE_INTERFACE
+from bluezutils import find_adapter, ADAPTER_INTERFACE, DEVICE_INTERFACE, NoAdapterException
 
 log_formatter = logging.Formatter(
     "%(asctime)s %(levelname).1s: [btagent] %(name)s: %(message)s")
@@ -35,6 +35,7 @@ BUS_NAME = 'org.bluez'
 AGENT_INTERFACE = 'org.bluez.Agent1'
 AGENT_PATH = "/bluecar/authagent"
 PASSKEY = 123456
+RETRY_INTERVAL = 5
 
 
 class Rejected(dbus.DBusException):
@@ -126,10 +127,10 @@ if __name__ == '__main__':
             LOG.info("Attempting to connect to system bus...")
             BUS = dbus.SystemBus()
         except DBusException as ex:
-            LOG.warn("Failed to connect to dbus %s: %s",
-                     ex.get_dbus_name(), ex.message)
+            LOG.warn("Failed to connect to dbus %s: %s, retrying in %s seconds...",
+                     ex.get_dbus_name(), ex.message, RETRY_INTERVAL)
 
-            time.sleep(5)
+            time.sleep(RETRY_INTERVAL)
 
     # Create and register agent implementation
     LOG.info("Attempting to register Agent with capability '%s' ...", capability)
@@ -142,10 +143,18 @@ if __name__ == '__main__':
     LOG.info("Agent registered")
 
     LOG.info("Ensuring that adapter is discoverable/pairable...")
-    try:
-        props = dbus.Interface(find_adapter().proxy_object,
-                               "org.freedesktop.DBus.Properties")
 
+    adapter_obj = None
+    while adapter_obj is None:
+        try:
+            adapter_obj = find_adapter().proxy_object
+        except NoAdapterException as ex:
+            LOG.warn(
+                "Can't find BT hardware adapter, retrying in %s seconds...", RETRY_INTERVAL)
+            time.sleep(RETRY_INTERVAL)
+
+    try:
+        props = dbus.Interface(adapter_obj, "org.freedesktop.DBus.Properties")
         props.Set(ADAPTER_INTERFACE, "Discoverable", True)
         props.Set(ADAPTER_INTERFACE, "Pairable", True)
         props.Set(ADAPTER_INTERFACE, "DiscoverableTimeout", dbus.UInt32(0))

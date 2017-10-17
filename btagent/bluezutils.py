@@ -4,10 +4,19 @@ SERVICE_NAME = "org.bluez"
 ADAPTER_INTERFACE = SERVICE_NAME + ".Adapter1"
 DEVICE_INTERFACE = SERVICE_NAME + ".Device1"
 
+
+class NoAdapterException(Exception):
+    pass
+
+
+class NoDeviceException(Exception):
+    pass
+
+
 def get_managed_objects():
     bus = dbus.SystemBus()
     manager = dbus.Interface(bus.get_object("org.bluez", "/"),
-                "org.freedesktop.DBus.ObjectManager")
+                             "org.freedesktop.DBus.ObjectManager")
     return manager.GetManagedObjects()
 
 def find_adapter(pattern=None):
@@ -23,11 +32,11 @@ def find_adapter_in_objects(objects, pattern=None):
                             path.endswith(pattern):
             obj = bus.get_object(SERVICE_NAME, path)
             return dbus.Interface(obj, ADAPTER_INTERFACE)
-    raise Exception("Bluetooth adapter not found")
+    raise NoAdapterException("Bluetooth adapter not found")
 
 def find_device(device_address, adapter_pattern=None):
     return find_device_in_objects(get_managed_objects(), device_address,
-                                adapter_pattern)
+                                  adapter_pattern)
 
 def find_device_in_objects(objects, device_address, adapter_pattern=None):
     bus = dbus.SystemBus()
@@ -39,9 +48,8 @@ def find_device_in_objects(objects, device_address, adapter_pattern=None):
         device = ifaces.get(DEVICE_INTERFACE)
         if device is None:
             continue
-        if (device["Address"] == device_address and
-                        path.startswith(path_prefix)):
+        if device["Address"] == device_address and path.startswith(path_prefix):
             obj = bus.get_object(SERVICE_NAME, path)
             return dbus.Interface(obj, DEVICE_INTERFACE)
 
-    raise Exception("Bluetooth device not found")
+    raise NoDeviceException("Bluetooth device not found")
