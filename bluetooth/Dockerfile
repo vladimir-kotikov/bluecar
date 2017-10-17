@@ -2,13 +2,18 @@
 
 # Don't use stretch as it doesn't have properly patched bluez yet
 # See https://github.com/raspberrypi/linux/issues/1314#issuecomment-190784653
-FROM resin/raspberrypi3-debian
+FROM resin/raspberrypi3-debian:jessie
 
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
     # TODO: instead pi-bluetooth install just raspberrypi-sys-mods and
     # craft own hci configuration service (+ device name setup)
-    bluez bluez-firmware pulseaudio pulseaudio-module-bluetooth pi-bluetooth socat
+    bluez bluez-firmware pi-bluetooth socat
+
+RUN echo deb http://deb.debian.org/debian buster main >> /etc/apt/sources.list.d/buster-main.list && \
+    apt-get update && \
+    apt-get install -yq --no-install-recommends -t buster \
+    pulseaudio pulseaudio-module-bluetooth
 
 
 COPY conf/alsa-base.conf /etc/modprobe.d/
@@ -17,11 +22,10 @@ COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
 COPY conf/bluetooth-main.conf /etc/bluetooth/main.conf
 
 RUN echo "resample-method = ffmpeg" >> /etc/pulse/daemon.conf
-# TODO: build pulseaudio from sources to enable this
-# RUN echo "avoid-resampling = yes" > /etc/pulse/daemon.conf
+RUN echo "avoid-resampling = yes" > /etc/pulse/daemon.conf
 RUN echo "load-module module-switch-on-connect" >> /etc/pulse/system.pa
 RUN echo "load-module module-bluetooth-discover" >> /etc/pulse/system.pa
-RUN echo "load-module module-bluetooth-policy" >> /etc/pulse/system.pa
+RUN echo "load-module module-bluetooth-policy auto_switch=2" >> /etc/pulse/system.pa
 RUN sed 's/^load-module module-console-kit/#load-module module-console-kit/' -i /etc/pulse/system.pa
 RUN sed 's/^load-module module-udev-detect/load-module module-udev-detect tsched=0/' -i /etc/pulse/system.pa
 
