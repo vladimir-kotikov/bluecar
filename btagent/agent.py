@@ -53,7 +53,8 @@ class Agent(dbus.service.Object):
 
     @dbus.service.method(AGENT_INTERFACE, in_signature="", out_signature="")
     def Release(self):
-        LOG.info("Reveived Release, ignoring...")
+        LOG.info("Received Release, exiting.")
+        exit(0)
 
     @dbus.service.method(AGENT_INTERFACE, in_signature="o", out_signature="s")
     def RequestPinCode(self, device):
