@@ -1,15 +1,10 @@
-
-from
-
-s = Structure()
-PyCStructType()
+# TODO: Use https://docs.python.org/2/library/struct.html or
+# http://bitstruct.readthedocs.io/en/latest/ instead of ctypes
 
 class Message(Structure):
     _fields_ = [
         ("flags", c_uint8),
-        ("length", c_uint8),
-
-                ...                 ("y", c_int)]
+        ("length", c_uint8)]
 
 class CanMessage(object):
     extended = False
