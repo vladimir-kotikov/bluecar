@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a5e66b696608af26ebfb62de5d3cbcd7f2e7048d5b090b322037fa91521e9484"
+            "sha256": "3aecea1dc3bf69bfa2b513d0ddc395e84ce598a27af52f6a1a7eb085189d7449"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -17,9 +17,7 @@
             "sys_platform": "darwin"
         },
         "pipfile-spec": 6,
-        "requires": {
-            "python_version": "3.6"
-        },
+        "requires": {},
         "sources": [
             {
                 "name": "pypi",
@@ -29,6 +27,13 @@
         ]
     },
     "default": {
+        "bitstruct": {
+            "hashes": [
+                "sha256:68561e84ea112bcbc3042984495949653b1394e17a48496b46f22daff33de4c9",
+                "sha256:6a67f91eaec4aebb7e561c8a27b3c100140b9b18b6a57b293eed6cc4b8d24128"
+            ],
+            "version": "==3.5.0"
+        },
         "dbussy": {
             "git": "https://github.com/ldo/dbussy.git"
         },
@@ -60,14 +65,13 @@
                 "sha256:4ba998e881f285c1d1b73f5b6e3766539b4e162320f9589334400c5ddc35198c",
                 "sha256:31f235852f88edc1558d428d890663c49eb4514ffec9f3650e7f3c9e4a12e36f"
             ],
-            "markers": "python_version == '2.7'",
+            "markers": "python_version < '3.3'",
             "version": "==1.4"
         },
         "configparser": {
             "hashes": [
                 "sha256:5308b47021bc2340965c371f0f058cc6971a04502638d4244225c49d80db273a"
             ],
-            "markers": "python_version == '2.7'",
             "version": "==3.5.0"
         },
         "enum34": {
@@ -128,12 +132,26 @@
             ],
             "version": "==0.6.1"
         },
+        "py": {
+            "hashes": [
+                "sha256:2ccb79b01769d99115aa600d7eed99f524bf752bba8f041dc1c184853514655a",
+                "sha256:0f2d585d22050e90c7d293b6451c83db097df77871974d90efd5a30dc12fcde3"
+            ],
+            "version": "==1.4.34"
+        },
         "pylint": {
             "hashes": [
                 "sha256:948679535a28afc54afb9210dabc6973305409042ece8e5768ca1409910c1ed8",
                 "sha256:1f65b3815c3bf7524b845711d54c4242e4057dd93826586620239ecdfe591fb1"
             ],
             "version": "==1.7.4"
+        },
+        "pytest": {
+            "hashes": [
+                "sha256:81a25f36a97da3313e1125fce9e7bbbba565bc7fec3c5beb14c262ddab238ac1",
+                "sha256:27fa6617efc2869d3e969a3e75ec060375bfb28831ade8b5cdd68da3a741dc3c"
+            ],
+            "version": "==3.2.3"
         },
         "singledispatch": {
             "hashes": [

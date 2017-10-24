@@ -1,0 +1,3 @@
+bitstruct==3.5.0
+pyserial-asyncio==0.4
+git+https://github.com/ldo/dbussy.git#egg=dbussy

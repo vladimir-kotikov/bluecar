@@ -1,3 +1,10 @@
 {
-    "python.pythonPath": "/Users/kotikov.vladimir/.virtualenvs/canbus-w-bpRhmi/bin/python"
+    "python.pythonPath": "/Users/kotikov.vladimir/.virtualenvs/canmonitor-MaubZqAK/bin/python3.6",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/*.pyc": true,
+        "**/__pycache__": true,
+        "**/.cache": true
+    }
 }
