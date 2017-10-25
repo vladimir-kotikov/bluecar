@@ -7,3 +7,4 @@
 ## Other
 
 - A2DP without pulseaudio - https://github.com/Arkq/bluez-alsa
+- Recipe for volumio - https://volumio.org/forum/volumio-bluez-alsa-a2dp-bluetooth-support-t6130.html

@@ -2,8 +2,10 @@
 
 # Don't use stretch as it doesn't have properly patched bluez yet
 # See https://github.com/raspberrypi/linux/issues/1314#issuecomment-190784653
-FROM resin/raspberrypi3-debian:jessie
+FROM resin/raspberrypi3-debian:stretch
 
+RUN echo deb http://archive.raspberrypi.org/debian/ stretch main ui >> /etc/apt/sources.list.d/raspi.list \
+    && apt-key adv --keyserver pgp.mit.edu  --recv-key 0x82B129927FA3303E
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
     # TODO: instead pi-bluetooth install just raspberrypi-sys-mods and
@@ -11,11 +13,12 @@ RUN apt-get update && \
     bluez bluez-firmware pi-bluetooth socat
 
 RUN echo deb http://deb.debian.org/debian buster main >> /etc/apt/sources.list.d/buster-main.list && \
-    apt-get update && \
+apt-get update && \
     apt-get install -yq --no-install-recommends -t buster \
     pulseaudio pulseaudio-module-bluetooth
 
 
+RUN cp /etc/bluetooth/main.conf /etc/bluetooth/main.conf.old
 COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
 # TODO: Ideally DB should reconnect to last device automatically
 COPY conf/bluetooth-main.conf /etc/bluetooth/main.conf
