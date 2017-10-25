@@ -2,7 +2,7 @@
 
 To get those XMLs use the following command, replacing `/org/bluez` object path with the path you want ot introspect
 ```
-dbus-send --system --type=method_call --print-reply \ --dest=org.bluez \    /org/bluez \    org.freedesktop.DBus.Introspectable.Introspect
+dbus-send --system --type=method_call --print-reply \ --dest=org.bluez \    /org/bluez/hci0 \    org.freedesktop.DBus.Introspectable.Introspect
 ```
 
 ## `bluez` root
@@ -202,7 +202,8 @@ dbus-send --system --type=method_call --print-reply \ --dest=org.bluez \    /org
         </method>
     </interface>
     <node name="dev_98_01_A7_AE_52_5C"/>
-    <node name="dev_A4_51_6F_8A_AF_59"/></node>
+    <node name="dev_A4_51_6F_8A_AF_59"/>
+</node>
 ```
 
 ## Device connected to `hci0` adapter
@@ -288,5 +289,59 @@ dbus-send --system --type=method_call --print-reply \ --dest=org.bluez \    /org
         <property name="Connected" type="b" access="read"></property>
     </interface>
     <node name="fd0"/>
-    <node name="player0"/></node>"
+    <node name="player0"/>
+</node>"
+```
+
+## `player0` node on device
+
+```xml
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.bluez.MediaPlayer1">
+        <method name="Play"></method>
+        <method name="Pause"></method>
+        <method name="Stop"></method>
+        <method name="Next"></method>
+        <method name="Previous"></method>
+        <method name="FastForward"></method>
+        <method name="Rewind"></method>
+        <property name="Name" type="s" access="read"></property>
+        <property name="Type" type="s" access="read"></property>
+        <property name="Subtype" type="s" access="read"></property>
+        <property name="Position" type="u" access="read"></property>
+        <property name="Status" type="s" access="read"></property>
+        <property name="Equalizer" type="s" access="readwrite"></property>
+        <property name="Repeat" type="s" access="readwrite"></property>
+        <property name="Shuffle" type="s" access="readwrite"></property>
+        <property name="Scan" type="s" access="readwrite"></property>
+        <property name="Track" type="a{sv}" access="read"></property>
+        <property name="Device" type="o" access="read"></property>
+        <property name="Browsable" type="b" access="read"></property>
+        <property name="Searchable" type="b" access="read"></property>
+        <property name="Playlist" type="o" access="read"></property>
+    </interface>
+    <interface name="org.freedesktop.DBus.Properties">
+        <method name="Get">
+            <arg name="interface" type="s" direction="in"/>
+            <arg name="name" type="s" direction="in"/>
+            <arg name="value" type="v" direction="out"/>
+        </method>
+        <method name="Set">
+            <arg name="interface" type="s" direction="in"/>
+            <arg name="name" type="s" direction="in"/>
+            <arg name="value" type="v" direction="in"/>
+        </method>
+        <method name="GetAll">
+            <arg name="interface" type="s" direction="in"/>
+            <arg name="properties" type="a{sv}" direction="out"/>
+        </method>
+        <signal name="PropertiesChanged">
+            <arg name="interface" type="s"/>
+            <arg name="changed_properties" type="a{sv}"/>
+            <arg name="invalidated_properties" type="as"/>
+        </signal>
+    </interface>
+</node>
 ```

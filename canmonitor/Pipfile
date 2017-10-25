@@ -6,9 +6,11 @@ name = "pypi"
 [dev-packages]
 pytest = "*"
 pylint = "*"
+"pytest-asyncio" = "*"
 
 [packages]
 
 dbussy = {git = "https://github.com/ldo/dbussy.git"}
 bitstruct = "*"
 "pyserial-asyncio" = "*"
+aioconsole = "*"
