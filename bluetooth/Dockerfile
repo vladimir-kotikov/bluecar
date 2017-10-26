@@ -22,10 +22,10 @@ COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
 COPY conf/bluetooth-main.conf /etc/bluetooth/main.conf
 
 RUN echo "resample-method = ffmpeg" >> /etc/pulse/daemon.conf
-RUN echo "avoid-resampling = yes" > /etc/pulse/daemon.conf
+RUN echo "avoid-resampling = yes" >> /etc/pulse/daemon.conf
 RUN echo "load-module module-switch-on-connect" >> /etc/pulse/system.pa
 RUN echo "load-module module-bluetooth-discover" >> /etc/pulse/system.pa
-RUN echo "load-module module-bluetooth-policy auto_switch=2" >> /etc/pulse/system.pa
+RUN echo "load-module module-bluetooth-policy" >> /etc/pulse/system.pa
 RUN sed 's/^load-module module-console-kit/#load-module module-console-kit/' -i /etc/pulse/system.pa
 RUN sed 's/^load-module module-udev-detect/load-module module-udev-detect tsched=0/' -i /etc/pulse/system.pa
 
@@ -41,7 +41,8 @@ RUN sed 's/^ExecStart=\/usr\/lib\/bluetooth\/bluetoothd/ExecStart=\/usr\/lib\/bl
 # hciattach searches for firmware in /etc/firmware instead of /lib/firmware
 RUN ln -s /lib/firmware/brcm /etc/firmware
 
-RUN adduser root pulse-access
+RUN adduser root pulse-access && adduser pulse bluetooth
+RUN echo ForwardToConsole=yes >> /etc/systemd/journald.conf
 
 ENV DISPLAY :0
 ENV INITSYSTEM on
