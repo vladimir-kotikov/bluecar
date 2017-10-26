@@ -16,7 +16,6 @@ RUN echo deb http://deb.debian.org/debian buster main >> /etc/apt/sources.list.d
     pulseaudio pulseaudio-module-bluetooth
 
 
-COPY conf/alsa-base.conf /etc/modprobe.d/
 COPY conf/pulseaudio-bluetooth.conf /etc/dbus-1/system/
 # TODO: Ideally DB should reconnect to last device automatically
 COPY conf/bluetooth-main.conf /etc/bluetooth/main.conf
@@ -41,7 +40,7 @@ RUN sed 's/^ExecStart=\/usr\/lib\/bluetooth\/bluetoothd/ExecStart=\/usr\/lib\/bl
 # hciattach searches for firmware in /etc/firmware instead of /lib/firmware
 RUN ln -s /lib/firmware/brcm /etc/firmware
 
-RUN adduser root pulse-access && adduser pulse bluetooth
+RUN adduser root pulse-access && adduser pulse bluetooth && adduser root bluetooth
 RUN echo ForwardToConsole=yes >> /etc/systemd/journald.conf
 
 ENV DISPLAY :0
