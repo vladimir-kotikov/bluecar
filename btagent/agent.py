@@ -30,7 +30,10 @@ except ImportError:
 
 # 110d is A2DP profile. See https://www.bluetooth.com/specifications/assigned-numbers/service-discovery
 # for other IDs
-ALLOWED_SERVICES = ("110d", "110e")
+ALLOWED_SERVICES = (
+    "110d", "110e",  # Advanced Audio Distribution Profile (A2DP) (+ AVRCP)
+    "111e"           # Hands-Free Profile (HFP)
+    )
 
 BUS_NAME = 'org.bluez'
 AGENT_INTERFACE = 'org.bluez.Agent1'

@@ -1,7 +1,7 @@
 local_resinos:
   app-name: bluetooth
   build-triggers:
-    - Dockerfile: dcd2deaaf98ccf41a4e075f76ef8d202e50d1f96f8f3f7e86702e52a3d58fdc2
+    - Dockerfile: e2775c7ae9a7b3c33c916eb8824b20bb86d27e725dd35826554200113e8d8b7f
   environment: []
 ignore:
   - .git
