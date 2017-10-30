@@ -27,3 +27,14 @@ eval $(docker-machine env $PI_NAME)
 ```sh
 docker run --tty -ti -v /var/run/dbus:/var/run/dbus -d /dev/ttyAMA0 --net=host bluez-sink bash
 ```
+
+## Using external BT dongle
+
+To use this with external BT dongle (required for HFP support via Ofono) you need to turn off bluetooth capabilities on host system:
+
+```sh
+mount -o remount rw /
+systemctl stop bluetooth
+systemctl disable bluetooth
+systemctl mask bluetooth
+```

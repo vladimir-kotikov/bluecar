@@ -1,0 +1,5 @@
+local_resinos:
+  app-name: btagent
+  build-triggers:
+    - Dockerfile: 4cc0ac03532a3ee95dc7c8d01154262e6381424b4bdea13010b17bc33beab508
+  environment: []

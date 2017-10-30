@@ -3,6 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from optparse import OptionParser
+import os
 import logging
 import time
 import dbus
@@ -152,6 +153,8 @@ if __name__ == '__main__':
         except NoAdapterException as ex:
             LOG.warn(
                 "Can't find BT hardware adapter, retrying in %s seconds...", RETRY_INTERVAL)
+
+            LOG.debug(ex)
             time.sleep(RETRY_INTERVAL)
 
     try:
@@ -164,5 +167,7 @@ if __name__ == '__main__':
     except DBusException as ex:
         LOG.warn("Failed to make adapter discoverable/pairable: %s. %s",
                  ex.get_dbus_name(), ex.message)
+
+        LOG.debug(ex)
 
     GObject.MainLoop().run()
